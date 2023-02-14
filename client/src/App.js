@@ -17,7 +17,7 @@ function initializeReactGA() {
 
 class App extends React.Component {
   componentDidMount() {
-    initializeReactGA();
+    // initializeReactGA();
   }
   render() {
     return (
