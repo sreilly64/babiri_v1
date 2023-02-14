@@ -117,12 +117,9 @@ class Teams extends React.Component {
       <div className="container">
         <p>
           <i>
-            Recording the 100 most successful public Showdown teams for VGC 2020
+            Recording the 100 most successful public Showdown teams for VGC 2023
             from every day. <br />
-            Find teams by a specific Pokémon or from a specific date. <br />{" "}
-            <br />
-            Data collected from March 4th onwards due to the introduction of new
-            Pokémon in the format.
+            Find teams by a specific Pokémon or from a specific date. <br />
           </i>
         </p>
         <TeamsSearchBar onFormSubmit={this.onTermSubmit} />
