@@ -41,21 +41,26 @@ class Teams extends React.Component {
   }
 
   componentDidMount() {
-    var basePokemonURL = window.location.href;
-    basePokemonURL = basePokemonURL.substring(0, basePokemonURL.indexOf("="));
-    var urlParams = new URLSearchParams(window.location.href);
-    var queryParam = urlParams.get(basePokemonURL);
-    queryParam = queryParam ? queryParam : "";
-    this.onTermSubmit(queryParam, "");
+    var url = window.location.href;
+    var params = url.substring(url.indexOf("?"));
+    var urlParams = new URLSearchParams(params);
+    var pokemonName = urlParams.get("pokemon");
+    pokemonName = pokemonName ? pokemonName : "";
+    var date = urlParams.get("date");
+    date = date ? date : "";
+    var format = urlParams.get("format");
+    format = format ? format : this.teamsSearchBar.state.format;
+    this.onTermSubmit(format, pokemonName, date);
   }
 
-  onTermSubmit = async (pokemon, date) => {
-    var setParams = {};
+  onTermSubmit = async (format, pokemon, date) => {
+    var setParams = { format: format };
     var chartData = {};
 
     // Mon Parameter, No Date
     if (pokemon && !date) {
       setParams = {
+        format: format,
         pokemon: pokemon
       };
     }
@@ -63,6 +68,7 @@ class Teams extends React.Component {
     // No Mon, Date Parameter
     if (!pokemon && date) {
       setParams = {
+        format: format,
         date: date
       };
     }
@@ -70,6 +76,7 @@ class Teams extends React.Component {
     // Mon Parameter, Date Parameter
     if (pokemon && date) {
       setParams = {
+        format: format,
         pokemon: pokemon,
         date: date
       };
@@ -117,12 +124,14 @@ class Teams extends React.Component {
       <div className="container">
         <p>
           <i>
-            Recording the 100 most successful public Showdown teams for VGC 2023
+            Recording the 100 most successful public Showdown teams for VGC 2023 and Doubles OU
             from every day. <br />
             Find teams by a specific Pokémon or from a specific date. <br />
           </i>
         </p>
-        <TeamsSearchBar onFormSubmit={this.onTermSubmit} />
+        <TeamsSearchBar 
+          ref={(teamsSearchBar) => {this.teamsSearchBar = teamsSearchBar;}}
+          onFormSubmit={this.onTermSubmit} />
         <br />
         {loading ? (
           <LoadingSpinner

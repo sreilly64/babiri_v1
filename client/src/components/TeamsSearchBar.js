@@ -8,31 +8,44 @@ class TeamsSearchBar extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  state = { pokemon: "", date: "" };
+  defaultFormat = "gen9vgc2023series2"
+  state = { format: this.defaultFormat, pokemon: "", date: "" };
 
   componentDidMount() {
-    var basePokemonURL = window.location.href;
-    basePokemonURL = basePokemonURL.substring(0, basePokemonURL.indexOf("="));
-    var urlParams = new URLSearchParams(window.location.href);
-    var queryParam = urlParams.get(basePokemonURL);
-    queryParam = queryParam ? queryParam : "";
+    var url = window.location.href;
+    var params = url.substring(url.indexOf("?"));
+    var urlParams = new URLSearchParams(params);
+    var pokemonName = urlParams.get("pokemon");
+    pokemonName = pokemonName ? pokemonName : "";
+    var date = urlParams.get("date");
+    date = date ? date : "";
+    var format = urlParams.get("format");
+    format = format ? format : this.defaultFormat;
+    
     this.setState({
-      pokemon: queryParam,
-      date: ""
+      format: format,
+      pokemon: pokemonName,
+      date: date
     });
   }
 
   onInputChange = event => {
     const value = event.target.value;
+    const eventName = event.target.name;
+    event.persist()
     this.setState({
       ...this.state,
-      [event.target.name]: value
+      [eventName]: value
+    }, () => {
+      if (eventName === "format") {
+        this.onFormSubmit(event)
+      }
     });
   };
 
   onFormSubmit = event => {
     event.preventDefault();
-    this.props.onFormSubmit(this.state.pokemon, this.state.date);
+    this.props.onFormSubmit(this.state.format, this.state.pokemon, this.state.date);
   };
 
   clearInputs = () => {
@@ -47,6 +60,18 @@ class TeamsSearchBar extends React.Component {
       <div className="md-form active-pink active-pink-2 mb-3 mt-0">
         <form onSubmit={this.onFormSubmit}>
           <div className="field">
+            <label>
+              <i>Select Format</i>
+              <select 
+                name="format" 
+                className="form-control mt-1" 
+                value={this.state.format}
+                onChange={this.onInputChange}>
+                <option value="gen9vgc2023series2">VGC 2023 Series 2</option>
+                <option value="gen9doublesou">Doubles OU</option>
+              </select>
+            </label> 
+            <br />
             <label>
               <i>
                 By Pokémon (

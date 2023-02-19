@@ -21,12 +21,13 @@ function isEmptyObject(obj) {
 router.get("/", async (req, res) => {
   date = req.query.date;
   mon = req.query.pokemon;
+  format = req.query.format;
 
   try {
     // No Parameters
     // Return all teams from most recent date
     if (isEmptyObject(date) && isEmptyObject(mon)) {
-      const teams = await Team.find()
+      const teams = await Team.find({ format: format})
         .sort({ date: -1 })
         .limit(1);
       res.json(teams[0]);
@@ -35,7 +36,7 @@ router.get("/", async (req, res) => {
     // Mon Parameter, No Date Parameters
     // Return teams with mon from most recent date
     else if (isEmptyObject(date) && !isEmptyObject(mon)) {
-      const teams = await Team.find()
+      const teams = await Team.find({ format: format})
         .sort({ date: -1 })
         .limit(1);
 
@@ -80,6 +81,7 @@ router.get("/", async (req, res) => {
         upperDateRange = date + "T23:59:59.000+00:00";
 
         const teams = await Team.find({
+          format: format,
           date: {
             $gte: new Date(lowerDateRange),
             $lt: new Date(upperDateRange)
@@ -105,6 +107,7 @@ router.get("/", async (req, res) => {
         upperDateRange = date + "T23:59:59.000+00:00";
 
         teams = await Team.find({
+          format: format,
           date: {
             $gte: new Date(lowerDateRange),
             $lt: new Date(upperDateRange)
