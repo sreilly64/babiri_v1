@@ -2,3 +2,4 @@ node_modules/
 default.json
 package-lock.json
 package.json
+.vscode/
