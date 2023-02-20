@@ -1,4 +1,5 @@
 import React from "react";
+import scraper from "../apis/scraper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -8,10 +9,33 @@ class TeamsSearchBar extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  defaultFormat = "gen9vgc2023series2"
-  state = { format: this.defaultFormat, pokemon: "", date: "" };
+  defaultFormat = "gen9vgc2023series2";
+  state = { format: this.defaultFormat, pokemon: "", date: ""};
+  availableFormats = []
+  supportedFormatsMapping = [
+    {value: "gen9vgc2023series2", text: "VGC 2023 Series 2" },
+    {value: "gen9vgc2023series1", text: "VGC 2023 Series 1" },
+    {value: "gen9doubleslc", text: "Gen 9 Doubles LC" },
+    {value: "gen9doublesuu", text: "Gen 9 Doubles UU" },
+    {value: "gen9doublesou", text: "Gen 9 Doubles OU" },
+    {value: "gen9doublesubers", text: "Gen 9 Doubles Ubers" },
+    {value: "gen9lc", text: "Gen 9 Singles LC" },
+    {value: "gen9uu", text: "Gen 9 Singles UU" },
+    {value: "gen9ou", text: "Gen 9 Singles OU" },
+    {value: "gen9ubers", text: "Gen 9 Singles Ubers" }
+  ];
+
+  getAvailableFormats = async () => {
+    const res = await scraper.get("/teams/formats");
+    console.debug("Formats api response: " + JSON.stringify(res))
+    console.debug("Formats api res.data: " + JSON.stringify(res.data))
+    return res.data;
+  }
 
   componentDidMount() {
+    this.getAvailableFormats().then((data) => {
+      this.availableFormats = data;
+    })
     var url = window.location.href;
     var params = url.substring(url.indexOf("?"));
     var urlParams = new URLSearchParams(params);
@@ -21,7 +45,6 @@ class TeamsSearchBar extends React.Component {
     date = date ? date : "";
     var format = urlParams.get("format");
     format = format ? format : this.defaultFormat;
-    
     this.setState({
       format: format,
       pokemon: pokemonName,
@@ -67,8 +90,11 @@ class TeamsSearchBar extends React.Component {
                 className="form-control mt-1" 
                 value={this.state.format}
                 onChange={this.onInputChange}>
-                <option value="gen9vgc2023series2">VGC 2023 Series 2</option>
-                <option value="gen9doublesou">Doubles OU</option>
+                {this.supportedFormatsMapping.map(item => {
+                  if (this.availableFormats.includes(item.value)) {
+                    return (<option key={item.value} value={item.value}>{item.text}</option>)
+                  }
+                })}
               </select>
             </label> 
             <br />

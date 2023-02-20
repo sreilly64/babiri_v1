@@ -124,8 +124,7 @@ class Teams extends React.Component {
       <div className="container">
         <p>
           <i>
-            Recording the 100 most successful public Showdown teams for VGC 2023 and Doubles OU
-            from every day. <br />
+            Recording the 100 most successful public Showdown teams for VGC 2023 and other formats from each day. <br />
             Find teams by a specific Pokémon or from a specific date. <br />
           </i>
         </p>

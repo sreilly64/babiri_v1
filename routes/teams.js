@@ -15,6 +15,19 @@ function isEmptyObject(obj) {
   return true;
 }
 
+// @route   GET /teams/formats
+// @desc    Retrieve a list of Showdown formats that are currently stored in the database
+// @access  Public
+router.get("/formats", async (req, res) => {
+  try {
+    const formats = await Team.distinct("format");
+    res.json(formats);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+})
+
 // @route   GET /teams/
 // @desc    Retrieve most recent date's teams
 // @access  Public
