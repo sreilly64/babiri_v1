@@ -13,6 +13,8 @@ class TeamsSearchBar extends React.Component {
   state = { format: this.defaultFormat, pokemon: "", date: ""};
   availableFormats = []
   supportedFormatsMapping = [
+    {value: "gen9vgc2023regulationc", text: "VGC 2023 Regulation C" },
+    {value: "gen9paldeaprologue", text: "VGC 2023 Paldea Prologue" },
     {value: "gen9vgc2023series2", text: "VGC 2023 Series 2" },
     {value: "gen9vgc2023series1", text: "VGC 2023 Series 1" },
     {value: "gen9doubleslc", text: "Gen 9 Doubles LC" },
