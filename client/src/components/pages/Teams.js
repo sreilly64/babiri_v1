@@ -36,7 +36,8 @@ class Teams extends React.Component {
       users: [],
       usage: [],
       chart: {},
-      loading: false
+      loading: false,
+      format: ""
     };
   }
 
@@ -113,7 +114,8 @@ class Teams extends React.Component {
       date: res.data.date,
       users: res.data.users,
       usage: res.data.usage,
-      chartData: chartData
+      chartData: chartData,
+      format: format
     });
   };
 
@@ -172,6 +174,7 @@ class Teams extends React.Component {
               <UsageList
                 usage={this.state.usage}
                 chartData={this.state.chartData}
+                format={this.state.format}
               />
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const UsageItem = ({ usage, rank }) => {
+const UsageItem = ({ usage, rank, format }) => {
   var name = usage.mon.substring(0, 1).toUpperCase() + usage.mon.substring(1);
   var cap_name = name.replace(/(^|[\s-])\S/g, function(match) {
     return match.toUpperCase();
@@ -21,7 +21,7 @@ const UsageItem = ({ usage, rank }) => {
           >
             #{rank + 1}.{" "}
             <a
-              href={`https://www.babiri.net/#/teams?pokemon=${cap_name}`}
+              href={`${window.location.href.includes("?") ? window.location.href.substring(0, window.location.href.indexOf("?")) : window.location.href }?pokemon=${cap_name}&format=${format}`}
               target="_blank"
               rel="noopener noreferrer"
               className="card-link"
@@ -61,7 +61,7 @@ const UsageItem = ({ usage, rank }) => {
             }}
           >
             <a
-              href={`https://pikalytics.com/pokedex/ss/${usage.mon.toLowerCase()}`}
+              href={`https://pikalytics.com/pokedex/${format}/${usage.mon.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
             >
