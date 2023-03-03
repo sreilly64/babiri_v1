@@ -13,16 +13,18 @@ function isEmptyObject(obj) {
   return true;
 }
 
-// @route   GET /
+// @route   GET /usage
 // @desc    Retrieve usage stats of selected Pokemon
 // @access  Public
 router.get("/", async (req, res) => {
   try {
     mon = req.query.pokemon;
+    format = req.query.format
 
     if (!isEmptyObject(mon)) {
       const pokemonUsage = await Usage.find({
-        pokemon: mon.toLowerCase()
+        pokemon: mon.toLowerCase(),
+        format: format
       }).sort({ date: 1 });
       res.json(pokemonUsage);
     } else {
