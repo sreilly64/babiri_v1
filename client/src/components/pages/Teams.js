@@ -33,11 +33,11 @@ class Teams extends React.Component {
     super(props);
     this.state = {
       date: "",
+      format: "",
       users: [],
       usage: [],
       chart: {},
-      loading: false,
-      format: ""
+      loading: false
     };
   }
 
@@ -45,12 +45,16 @@ class Teams extends React.Component {
     var url = window.location.href;
     var params = url.substring(url.indexOf("?"));
     var urlParams = new URLSearchParams(params);
+
     var pokemonName = urlParams.get("pokemon");
     pokemonName = pokemonName ? pokemonName : "";
+
     var date = urlParams.get("date");
     date = date ? date : "";
+
     var format = urlParams.get("format");
-    format = format ? format : this.teamsSearchBar.state.format;
+    format = format ? format : this.teamsSearchBar.formatSelector.defaultFormat;
+
     this.onTermSubmit(format, pokemonName, date);
   }
 
@@ -84,7 +88,7 @@ class Teams extends React.Component {
     }
 
     this.setState({ loading: true });
-
+    console.debug("Params for /teams: " + JSON.stringify(setParams))
     const res = await scraper.get("/teams", {
       params: setParams
     });
@@ -112,10 +116,10 @@ class Teams extends React.Component {
 
     this.setState({
       date: res.data.date,
+      format: res.data.format,
       users: res.data.users,
       usage: res.data.usage,
-      chartData: chartData,
-      format: format
+      chartData: chartData
     });
   };
 
