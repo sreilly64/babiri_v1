@@ -1,7 +1,31 @@
 import React from "react";
 
+var paradoxPokemon = {
+  greattusk: "Great Tusk",
+  screamtail: "Scream Tail",
+  brutebonnet: "Brute Bonnet",
+  fluttermane: "Flutter Mane",
+  slitherwing: "Slither Wing",
+  sandyshocks: "Sandy Shocks",
+  roaringmoon: "Roaring Moon",
+  walkingwake: "Walking Wake",
+  irontreads: "Iron Treads",
+  ironbundle: "Iron Bundle",
+  ironhands: "Iron Hands",
+  ironjugulis: "Iron Jugulis",
+  ironmoth: "Iron Moth",
+  ironthorns: "Iron Thorns",
+  ironvaliant: "Iron Valiant",
+  ironleaves: "Iron Leaves"
+}
+
 const UsageItem = ({ usage, rank, format }) => {
-  var name = usage.mon.substring(0, 1).toUpperCase() + usage.mon.substring(1);
+  var name = usage.mon;
+  if (Object.keys(paradoxPokemon).includes(name)){
+    name = paradoxPokemon[name];
+  } else {
+    name = name.substring(0, 1).toUpperCase() + name.substring(1);
+  }  
   var cap_name = name.replace(/(^|[\s-])\S/g, function(match) {
     return match.toUpperCase();
   });
@@ -61,7 +85,7 @@ const UsageItem = ({ usage, rank, format }) => {
             }}
           >
             <a
-              href={`https://pikalytics.com/pokedex/${format}/${usage.mon.toLowerCase()}`}
+              href={`https://pikalytics.com/pokedex/${format}/${cap_name}`}
               target="_blank"
               rel="noopener noreferrer"
             >

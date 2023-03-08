@@ -61,12 +61,13 @@ class Teams extends React.Component {
   onTermSubmit = async (format, pokemon, date) => {
     var setParams = { format: format };
     var chartData = {};
+    var formatedMonName = pokemon.replace(" ", "")
 
     // Mon Parameter, No Date
     if (pokemon && !date) {
       setParams = {
         format: format,
-        pokemon: pokemon
+        pokemon: formatedMonName
       };
     }
 
@@ -82,7 +83,7 @@ class Teams extends React.Component {
     if (pokemon && date) {
       setParams = {
         format: format,
-        pokemon: pokemon,
+        pokemon: formatedMonName,
         date: date
       };
     }
