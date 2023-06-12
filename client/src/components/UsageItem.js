@@ -26,10 +26,17 @@ const UsageItem = ({ usage, rank, format }) => {
   } else {
     name = name.substring(0, 1).toUpperCase() + name.substring(1);
   }  
+
   var cap_name = name.replace(/(^|[\s-])\S/g, function(match) {
     return match.toUpperCase();
   });
 
+  var underscore_name = cap_name.replace(" ", "_").replace("-", "_")
+
+  var pikalyticsFormat = format;
+  if (format == "gen9vgc2023regulationc") {
+    pikalyticsFormat = "gen9vgc2023regc"
+  }
   return (
     <div
       className="text-center"
@@ -85,7 +92,7 @@ const UsageItem = ({ usage, rank, format }) => {
             }}
           >
             <a
-              href={`https://pikalytics.com/pokedex/${format}/${cap_name}`}
+              href={`https://pikalytics.com/pokedex/${pikalyticsFormat}/${cap_name}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -101,6 +108,32 @@ const UsageItem = ({ usage, rank, format }) => {
                 className="mr-1"
               />
               <i>Pikalytics</i>
+            </a>
+          </p>
+          <p
+            className="card-subtitle mt-2 mr-2"
+            style={{
+              textAlign: "right",
+              float: "right"
+            }}
+          >
+            <a
+              href={`http://pucko.info/pokeStats/pokemon?format=${format}&pokemon=${underscore_name}&time=month`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={require(`../img/pokeStatsIcon.ico`)}
+                alt={usage.mon}
+                key={usage.mon}
+                style={{
+                  textAlign: "left",
+                  float: "left",
+                  height: "1.3em"
+                }}
+                className="mr-1"
+              />
+              <i>PokeStats</i>
             </a>
           </p>
         </div>

@@ -7,9 +7,10 @@ class FormatSelector extends React.Component {
   }
 
   state = { format: this.defaultFormat };
-  defaultFormat = "gen9vgc2023series2";
+  defaultFormat = "gen9vgc2023regulationd";
   availableFormats = []
   supportedFormatsMapping = [
+    {value: "gen9vgc2023regulationd", text: "VGC 2023 Regulation D" },
     {value: "gen9vgc2023regulationc", text: "VGC 2023 Regulation C" },
     {value: "gen9paldeaprologue", text: "Paldea Prologue" },
     {value: "gen9vgc2023series2", text: "VGC 2023 Series 2" },
