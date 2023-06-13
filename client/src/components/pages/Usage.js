@@ -20,18 +20,30 @@ class Usage extends React.Component {
     this.state = {
       usage: [],
       pokemon: "",
+      format: "",
       loading: false
     };
   }
 
   componentDidMount() {
-    this.onTermSubmit();
+    var url = window.location.href;
+    var params = url.substring(url.indexOf("?"));
+    var urlParams = new URLSearchParams(params);
+
+    var pokemonName = urlParams.get("pokemon");
+    pokemonName = pokemonName ? pokemonName : "";
+
+    var format = urlParams.get("format");
+    format = format ? format : this.usageSearchBar.formatSelector.defaultFormat;
+
+    this.onTermSubmit(format, pokemonName);
   }
 
-  onTermSubmit = async pokemon => {
-    var setParams = { pokemon: pokemon };
+  onTermSubmit = async (format, pokemon) => {
+    var setParams = { format: format, pokemon: pokemon };
     var chartData = {};
     var resPokemon = "";
+    var resFormat = "";
 
     this.setState({ loading: true });
     const res = await scraper.get("/usage", {
@@ -63,11 +75,15 @@ class Usage extends React.Component {
       typeof res.data[0] !== "undefined"
         ? (resPokemon = res.data[0].pokemon)
         : (resPokemon = "");
+      typeof res.data[0] !== "undefined"
+        ? (resFormat = res.data[0].format)
+        : (resFormat = "");
     }
 
     this.setState({
       chartData: chartData,
-      pokemon: resPokemon
+      pokemon: resPokemon,
+      format: resFormat
     });
   };
 
@@ -79,7 +95,9 @@ class Usage extends React.Component {
         <p>
           <i>Track the usage of any Pokémon through the season.</i>
         </p>
-        <UsageSearchBar onFormSubmit={this.onTermSubmit} />
+        <UsageSearchBar 
+          ref={(usageSearchBar) => {this.usageSearchBar = usageSearchBar;}} 
+          onFormSubmit={this.onTermSubmit} />
         <br />
         {loading ? (
           <LoadingSpinner

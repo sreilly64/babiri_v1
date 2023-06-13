@@ -12,10 +12,10 @@ function isEmptyObject(obj) {
   return true;
 }
 
-const UsageList = ({ usage, chartData }) => {
+const UsageList = ({ usage, chartData, format }) => {
   if (!isEmptyObject(usage)) {
     const renderedUsageList = usage.map((usage, index) => {
-      return <UsageItem usage={usage} rank={index} key={usage + index} />;
+      return <UsageItem usage={usage} rank={index} key={usage + index} format={format} />;
     });
     return (
       <div>

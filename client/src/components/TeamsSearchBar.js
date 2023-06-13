@@ -1,4 +1,5 @@
 import React from "react";
+import FormatSelector from "./FormatSelector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -8,31 +9,46 @@ class TeamsSearchBar extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  state = { pokemon: "", date: "" };
+  state = { format: "", pokemon: "", date: ""};
 
   componentDidMount() {
-    var basePokemonURL = window.location.href;
-    basePokemonURL = basePokemonURL.substring(0, basePokemonURL.indexOf("="));
-    var urlParams = new URLSearchParams(window.location.href);
-    var queryParam = urlParams.get(basePokemonURL);
-    queryParam = queryParam ? queryParam : "";
+    var url = window.location.href;
+    var params = url.substring(url.indexOf("?"));
+    var urlParams = new URLSearchParams(params);
+
+    var pokemonName = urlParams.get("pokemon");
+    pokemonName = pokemonName ? pokemonName : "";
+
+    var date = urlParams.get("date");
+    date = date ? date : "";
+    
+    var format = urlParams.get("format");
+    format = format ? format : this.formatSelector.defaultFormat;
+    
     this.setState({
-      pokemon: queryParam,
-      date: ""
+      format: format,
+      pokemon: pokemonName,
+      date: date
     });
   }
 
   onInputChange = event => {
     const value = event.target.value;
+    const eventName = event.target.name;
+    event.persist()
     this.setState({
       ...this.state,
-      [event.target.name]: value
+      [eventName]: value
+    }, () => {
+      if (eventName === "format") {
+        this.onFormSubmit(event)
+      }
     });
   };
 
   onFormSubmit = event => {
     event.preventDefault();
-    this.props.onFormSubmit(this.state.pokemon, this.state.date);
+    this.props.onFormSubmit(this.state.format, this.state.pokemon, this.state.date);
   };
 
   clearInputs = () => {
@@ -47,6 +63,11 @@ class TeamsSearchBar extends React.Component {
       <div className="md-form active-pink active-pink-2 mb-3 mt-0">
         <form onSubmit={this.onFormSubmit}>
           <div className="field">
+            <FormatSelector 
+              ref={(formatSelector) => {this.formatSelector = formatSelector;}}
+              onInputChange={this.onInputChange}
+              />
+            <br />
             <label>
               <i>
                 By Pokémon (

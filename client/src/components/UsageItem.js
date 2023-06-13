@@ -1,11 +1,42 @@
 import React from "react";
 
-const UsageItem = ({ usage, rank }) => {
-  var name = usage.mon.substring(0, 1).toUpperCase() + usage.mon.substring(1);
+var paradoxPokemon = {
+  greattusk: "Great Tusk",
+  screamtail: "Scream Tail",
+  brutebonnet: "Brute Bonnet",
+  fluttermane: "Flutter Mane",
+  slitherwing: "Slither Wing",
+  sandyshocks: "Sandy Shocks",
+  roaringmoon: "Roaring Moon",
+  walkingwake: "Walking Wake",
+  irontreads: "Iron Treads",
+  ironbundle: "Iron Bundle",
+  ironhands: "Iron Hands",
+  ironjugulis: "Iron Jugulis",
+  ironmoth: "Iron Moth",
+  ironthorns: "Iron Thorns",
+  ironvaliant: "Iron Valiant",
+  ironleaves: "Iron Leaves"
+}
+
+const UsageItem = ({ usage, rank, format }) => {
+  var name = usage.mon;
+  if (Object.keys(paradoxPokemon).includes(name)){
+    name = paradoxPokemon[name];
+  } else {
+    name = name.substring(0, 1).toUpperCase() + name.substring(1);
+  }  
+
   var cap_name = name.replace(/(^|[\s-])\S/g, function(match) {
     return match.toUpperCase();
   });
 
+  var underscore_name = cap_name.replace(" ", "_").replace("-", "_")
+
+  var pikalyticsFormat = format;
+  if (format == "gen9vgc2023regulationc") {
+    pikalyticsFormat = "gen9vgc2023regc"
+  }
   return (
     <div
       className="text-center"
@@ -21,7 +52,7 @@ const UsageItem = ({ usage, rank }) => {
           >
             #{rank + 1}.{" "}
             <a
-              href={`https://www.babiri.net/#/teams?pokemon=${cap_name}`}
+              href={`${window.location.href.includes("?") ? window.location.href.substring(0, window.location.href.indexOf("?")) : window.location.href }?pokemon=${cap_name}&format=${format}`}
               target="_blank"
               rel="noopener noreferrer"
               className="card-link"
@@ -61,7 +92,7 @@ const UsageItem = ({ usage, rank }) => {
             }}
           >
             <a
-              href={`https://pikalytics.com/pokedex/ss/${usage.mon.toLowerCase()}`}
+              href={`https://pikalytics.com/pokedex/${pikalyticsFormat}/${cap_name}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -77,6 +108,32 @@ const UsageItem = ({ usage, rank }) => {
                 className="mr-1"
               />
               <i>Pikalytics</i>
+            </a>
+          </p>
+          <p
+            className="card-subtitle mt-2 mr-2"
+            style={{
+              textAlign: "right",
+              float: "right"
+            }}
+          >
+            <a
+              href={`http://pucko.info/pokeStats/pokemon?format=${format}&pokemon=${underscore_name}&time=month`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={require(`../img/pokeStatsIcon.ico`)}
+                alt={usage.mon}
+                key={usage.mon}
+                style={{
+                  textAlign: "left",
+                  float: "left",
+                  height: "1.3em"
+                }}
+                className="mr-1"
+              />
+              <i>PokeStats</i>
             </a>
           </p>
         </div>

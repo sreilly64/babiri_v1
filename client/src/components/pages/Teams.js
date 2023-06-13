@@ -33,6 +33,7 @@ class Teams extends React.Component {
     super(props);
     this.state = {
       date: "",
+      format: "",
       users: [],
       usage: [],
       chart: {},
@@ -41,28 +42,39 @@ class Teams extends React.Component {
   }
 
   componentDidMount() {
-    var basePokemonURL = window.location.href;
-    basePokemonURL = basePokemonURL.substring(0, basePokemonURL.indexOf("="));
-    var urlParams = new URLSearchParams(window.location.href);
-    var queryParam = urlParams.get(basePokemonURL);
-    queryParam = queryParam ? queryParam : "";
-    this.onTermSubmit(queryParam, "");
+    var url = window.location.href;
+    var params = url.substring(url.indexOf("?"));
+    var urlParams = new URLSearchParams(params);
+
+    var pokemonName = urlParams.get("pokemon");
+    pokemonName = pokemonName ? pokemonName : "";
+
+    var date = urlParams.get("date");
+    date = date ? date : "";
+
+    var format = urlParams.get("format");
+    format = format ? format : this.teamsSearchBar.formatSelector.defaultFormat;
+
+    this.onTermSubmit(format, pokemonName, date);
   }
 
-  onTermSubmit = async (pokemon, date) => {
-    var setParams = {};
+  onTermSubmit = async (format, pokemon, date) => {
+    var setParams = { format: format };
     var chartData = {};
+    var formatedMonName = pokemon.replace(" ", "")
 
     // Mon Parameter, No Date
     if (pokemon && !date) {
       setParams = {
-        pokemon: pokemon
+        format: format,
+        pokemon: formatedMonName
       };
     }
 
     // No Mon, Date Parameter
     if (!pokemon && date) {
       setParams = {
+        format: format,
         date: date
       };
     }
@@ -70,13 +82,14 @@ class Teams extends React.Component {
     // Mon Parameter, Date Parameter
     if (pokemon && date) {
       setParams = {
-        pokemon: pokemon,
+        format: format,
+        pokemon: formatedMonName,
         date: date
       };
     }
 
     this.setState({ loading: true });
-
+    console.debug("Params for /teams: " + JSON.stringify(setParams))
     const res = await scraper.get("/teams", {
       params: setParams
     });
@@ -104,6 +117,7 @@ class Teams extends React.Component {
 
     this.setState({
       date: res.data.date,
+      format: res.data.format,
       users: res.data.users,
       usage: res.data.usage,
       chartData: chartData
@@ -117,12 +131,13 @@ class Teams extends React.Component {
       <div className="container">
         <p>
           <i>
-            Recording the 100 most successful public Showdown teams for VGC 2023
-            from every day. <br />
+            Recording the 100 most successful public Showdown teams for VGC 2023 and other formats from each day. <br />
             Find teams by a specific Pokémon or from a specific date. <br />
           </i>
         </p>
-        <TeamsSearchBar onFormSubmit={this.onTermSubmit} />
+        <TeamsSearchBar 
+          ref={(teamsSearchBar) => {this.teamsSearchBar = teamsSearchBar;}}
+          onFormSubmit={this.onTermSubmit} />
         <br />
         {loading ? (
           <LoadingSpinner
@@ -164,6 +179,7 @@ class Teams extends React.Component {
               <UsageList
                 usage={this.state.usage}
                 chartData={this.state.chartData}
+                format={this.state.format}
               />
             </div>
           </div>
