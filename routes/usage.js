@@ -21,15 +21,12 @@ router.get("/", async (req, res) => {
     mon = req.query.pokemon;
     format = req.query.format
 
-    if (!isEmptyObject(mon)) {
-      const pokemonUsage = await Usage.find({
-        pokemon: mon.toLowerCase(),
-        format: format
-      }).sort({ date: 1 });
-      res.json(pokemonUsage);
-    } else {
-      res.json([]);
-    }
+    const pokemonUsage = await Usage.find({
+      pokemon: mon.toLowerCase(),
+      format: format
+    }).sort({ date: 1 });
+    
+    res.json(pokemonUsage);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

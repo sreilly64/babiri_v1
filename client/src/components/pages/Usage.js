@@ -40,10 +40,20 @@ class Usage extends React.Component {
   }
 
   onTermSubmit = async (format, pokemon) => {
-    var setParams = { format: format, pokemon: pokemon };
+    var formatedMonName = pokemon.replace(" ", "")
+    var setParams = { format: format, pokemon: formatedMonName };
     var chartData = {};
     var resPokemon = "";
     var resFormat = "";
+    var newurl = window.location.origin + window.location.pathname + '?format=' + format;
+
+    if (pokemon) {
+      newurl = newurl + "&pokemon=" + formatedMonName
+    }
+
+    if(window.history.pushState) {
+      window.history.pushState({path:newurl},'',newurl);
+    } 
 
     this.setState({ loading: true });
     const res = await scraper.get("/usage", {

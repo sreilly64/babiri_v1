@@ -9,6 +9,8 @@ var paradoxPokemon = {
   sandyshocks: "Sandy Shocks",
   roaringmoon: "Roaring Moon",
   walkingwake: "Walking Wake",
+  ragingbolt: "Raging Bolt",
+  gougingfire: "Gouging Fire",
   irontreads: "Iron Treads",
   ironbundle: "Iron Bundle",
   ironhands: "Iron Hands",
@@ -31,12 +33,8 @@ const UsageItem = ({ usage, rank, format }) => {
     return match.toUpperCase();
   });
 
-  var underscore_name = cap_name.replace(" ", "_").replace("-", "_")
+  var underscore_name = cap_name.replace(" ", "_").replace("-", "_").replace("-", "_")
 
-  var pikalyticsFormat = format;
-  if (format == "gen9vgc2023regulationc") {
-    pikalyticsFormat = "gen9vgc2023regc"
-  }
   return (
     <div
       className="text-center"
@@ -92,7 +90,7 @@ const UsageItem = ({ usage, rank, format }) => {
             }}
           >
             <a
-              href={`https://pikalytics.com/pokedex/${pikalyticsFormat}/${cap_name}`}
+              href={`https://pikalytics.com/pokedex/${format}/${cap_name}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -118,7 +116,7 @@ const UsageItem = ({ usage, rank, format }) => {
             }}
           >
             <a
-              href={`http://pucko.info/pokeStats/pokemon?format=${format}&pokemon=${underscore_name}&time=month`}
+              href={`https://pokestats.pucko.info/pokeStats/pokemon?format=${format}&pokemon=${underscore_name}&time=month`}
               target="_blank"
               rel="noopener noreferrer"
             >

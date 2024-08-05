@@ -95,7 +95,7 @@ class TeamsSearchBar extends React.Component {
               <input
                 type="text"
                 className="form-control mt-1"
-                placeholder="Ex. 2020-03-04"
+                placeholder="Ex. 2024-08-03"
                 aria-label="Search"
                 name="date"
                 value={this.state.date}

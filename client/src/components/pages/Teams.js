@@ -59,34 +59,25 @@ class Teams extends React.Component {
   }
 
   onTermSubmit = async (format, pokemon, date) => {
-    var setParams = { format: format };
+    var newurl = window.location.origin + window.location.pathname + '?format=' + format;
     var chartData = {};
-    var formatedMonName = pokemon.replace(" ", "")
 
-    // Mon Parameter, No Date
-    if (pokemon && !date) {
-      setParams = {
-        format: format,
-        pokemon: formatedMonName
-      };
+    var setParams = { format: format };
+
+    if (pokemon) {
+      var formatedMonName = pokemon.replace(" ", "")
+      setParams.pokemon = formatedMonName;
+      newurl = newurl + '&pokemon=' + formatedMonName;
     }
 
-    // No Mon, Date Parameter
-    if (!pokemon && date) {
-      setParams = {
-        format: format,
-        date: date
-      };
+    if (date) {
+      setParams.date = date;
+      newurl = newurl + '&date=' + date;
     }
 
-    // Mon Parameter, Date Parameter
-    if (pokemon && date) {
-      setParams = {
-        format: format,
-        pokemon: formatedMonName,
-        date: date
-      };
-    }
+    if (window.history.pushState) {
+      window.history.pushState({path:newurl},'',newurl);
+    } 
 
     this.setState({ loading: true });
     console.debug("Params for /teams: " + JSON.stringify(setParams))
@@ -131,7 +122,7 @@ class Teams extends React.Component {
       <div className="container">
         <p>
           <i>
-            Recording the 100 most successful public Showdown teams for VGC 2023 and other formats from each day. <br />
+            Recording the 100 most successful public Showdown teams for VGC 2024 and other formats from each day. <br />
             Find teams by a specific Pokémon or from a specific date. <br />
           </i>
         </p>

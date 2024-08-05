@@ -1,28 +1,33 @@
 import React from "react";
+import Select from "react-select";
 import scraper from "../apis/scraper";
 
 class FormatSelector extends React.Component {
   constructor(props) {
     super(props);
+    this.defaultFormat = "gen9vgc2024regg";
+    this.state = { format: this.defaultFormat }
   }
 
-  state = { format: this.defaultFormat };
-  defaultFormat = "gen9vgc2023regulationd";
   availableFormats = []
   supportedFormatsMapping = [
-    {value: "gen9vgc2023regulationd", text: "VGC 2023 Regulation D" },
-    {value: "gen9vgc2023regulationc", text: "VGC 2023 Regulation C" },
-    {value: "gen9paldeaprologue", text: "Paldea Prologue" },
-    {value: "gen9vgc2023series2", text: "VGC 2023 Series 2" },
-    {value: "gen9vgc2023series1", text: "VGC 2023 Series 1" },
-    {value: "gen9doubleslc", text: "Gen 9 Doubles LC" },
-    {value: "gen9doublesuu", text: "Gen 9 Doubles UU" },
-    {value: "gen9doublesou", text: "Gen 9 Doubles OU" },
-    {value: "gen9doublesubers", text: "Gen 9 Doubles Ubers" },
-    {value: "gen9lc", text: "Gen 9 Singles LC" },
-    {value: "gen9uu", text: "Gen 9 Singles UU" },
-    {value: "gen9ou", text: "Gen 9 Singles OU" },
-    {value: "gen9ubers", text: "Gen 9 Singles Ubers" }
+    {value: "gen9vgc2024regg", text: "VGC Regulation G" },
+    {value: "gen9vgc2024reggbo3", text: "VGC Regulation G BO3" },
+    {value: "gen9vgc2024regh", text: "VGC Regulation H" },
+    {value: "gen9vgc2024reghbo3", text: "VGC Regulation H BO3" },
+    // {value: "gen9vgc2023regulationd", text: "VGC 2023 Regulation D" },
+    // {value: "gen9vgc2023regulationc", text: "VGC 2023 Regulation C" },
+    // {value: "gen9paldeaprologue", text: "Paldea Prologue" },
+    // {value: "gen9vgc2023series2", text: "VGC 2023 Series 2" },
+    // {value: "gen9vgc2023series1", text: "VGC 2023 Series 1" },
+    // {value: "gen9doubleslc", text: "Gen 9 Doubles LC" },
+    // {value: "gen9doublesuu", text: "Gen 9 Doubles UU" },
+    // {value: "gen9doublesou", text: "Gen 9 Doubles OU" },
+    // {value: "gen9doublesubers", text: "Gen 9 Doubles Ubers" },
+    // {value: "gen9lc", text: "Gen 9 Singles LC" },
+    // {value: "gen9uu", text: "Gen 9 Singles UU" },
+    // {value: "gen9ou", text: "Gen 9 Singles OU" },
+    // {value: "gen9ubers", text: "Gen 9 Singles Ubers" }
   ];
 
   getAvailableFormats = async () => {
@@ -56,7 +61,6 @@ class FormatSelector extends React.Component {
     this.props.onInputChange(event)
   };
 
-
   render() {
     return (
         <label>
@@ -68,7 +72,7 @@ class FormatSelector extends React.Component {
                 onChange={this.onInputChange}>
                 {this.supportedFormatsMapping.map(item => {
                     if (this.availableFormats.includes(item.value)) {
-                    return (<option key={item.value} value={item.value}>{item.text}</option>)
+                      return (<option key={item.value} value={item.value}>{item.text}</option>)
                     }
                 })}
             </select>
