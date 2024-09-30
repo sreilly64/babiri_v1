@@ -11,7 +11,7 @@ const UsageSchema = new mongoose.Schema(
     }
   },
   {
-    collection: "usage"
+    collection: "usage_test"
   }
 );
 

@@ -4,9 +4,9 @@ const UserItem = ({ user }) => {
   const renderedTeamList = user.team.map((mon, index) => {
     return (
       <img
-        src={require(`../img/sprites/${mon}.png`)}
-        alt={mon}
-        key={user.username + mon + index}
+        src={require(`../img/sprites/${mon.name}.png`)}
+        alt={mon.name}
+        key={user.username + mon.name + index}
       />
     );
   });
@@ -49,6 +49,10 @@ const UserItem = ({ user }) => {
                 <i>Uploaded: {user.upload_date}</i>
                 <br />
                 <i>Global Rank: #{user.rank}</i>
+                <br />
+                <i>{user.team_sheet ? (
+                  <p>Team Sheet:</p>
+                ) : ("")}</i>
               </p>
             </div>
           ) : (

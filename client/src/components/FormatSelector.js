@@ -1,5 +1,4 @@
 import React from "react";
-import Select from "react-select";
 import scraper from "../apis/scraper";
 
 class FormatSelector extends React.Component {

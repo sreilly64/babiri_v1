@@ -58,7 +58,7 @@ router.get("/", async (req, res) => {
       var filtered_teams = await Team.aggregate([
         { $match: { _id: ObjectId(teams[0]._id) } },
         { $unwind: "$users" },
-        { $match: { "users.team": { $in: [re] } } },
+        { $match: { "users.team.name": { $in: [re] } } },
         {
           $group: {
             _id: "$_id",
@@ -66,6 +66,7 @@ router.get("/", async (req, res) => {
             users: {
               $push: {
                 team: "$users.team",
+                team_sheet: "$user.team_sheet",
                 rank: "$users.rank",
                 website_rank: "$users.website_rank",
                 username: "$users.username",
@@ -138,7 +139,7 @@ router.get("/", async (req, res) => {
         var filtered_teams = await Team.aggregate([
           { $match: { _id: ObjectId(teams[0]._id) } },
           { $unwind: "$users" },
-          { $match: { "users.team": { $in: [re] } } },
+          { $match: { "users.team.name": { $in: [re] } } },
           {
             $group: {
               _id: "$_id",
@@ -146,6 +147,7 @@ router.get("/", async (req, res) => {
               users: {
                 $push: {
                   team: "$users.team",
+                  team_sheet: "$user.team_sheet",
                   rank: "$users.rank",
                   website_rank: "$users.website_rank",
                   username: "$users.username",
